@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Warehouse Management System</title>
+    <meta name="author" content="Marcin Molenda">
+    <meta name="description" content="Prosta aplikacja do zarządzania Magazynem">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        body {
+        background-image: url('/static/img/background.jpg');
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+        .container {
+            margin-top: 20px;
+            flex-grow: 1;
+        }
+
+        h1 {
+            font-size: 30px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .history-button {
+            padding: 10px 15px;
+            background-color: #494770;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .saldo-label {
+            position: absolute;
+            margin-bottom: 50px;
+            font-size: 22px;
+            color: #8a8a8a;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: calc(33.33% - 20px);
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #494770;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px;
+            align-self: flex-start;
+        }
+
+        #zmiana_saldo {
+            width: 100px;
+        }
+
+        .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: rgba(73, 71, 112, 0.8);
+        color: #fff;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="columns">
+            <div class="column col-12">
+                <h1>Warehouse Management System</h1>
+                <h2 style="font-size: 10px; font-style: italic;">created by Marcin Molenda</h2>
+                <div class="button-container">
+                    <a href="/historia/" class="history-button">HISTORIA</a>
+                </div>
+                <div class="table-container mx-auto">
+                    <span class="label secondary-primary saldo-label">Aktualne Saldo: {{ stan_konta }}</span>
+                    <h2>Zakup</h2>
+                    <form method="POST" action="{{ url_for('formularz_zakupu') }}">
+                        <label for="nazwa_produktu">Nazwa Produktu:</label>
+                        <input type="text" name="nazwa_produktu" required><br>
+                        <label for="cena">Cena:</label>
+                        <input type="number" name="cena" step="0.01" required><br>
+                        <label for="ilosc">Ilość:</label>
+                        <input type="number" name="ilosc" required><br>
+                        <input type="submit" value="Zakup">
+                    </form>
+
+                    <h2>Sprzedaż</h2>
+                    <form method="POST" action="{{ url_for('formularz_sprzedazy') }}">
+                        <label for="nazwa_produktu">Nazwa Produktu:</label>
+                        <input type="text" name="nazwa_produktu" required><br>
+                        <label for="cena">Cena:</label>
+                        <input type="number" name="cena" step="0.01" required><br>
+                        <label for="ilosc">Ilość:</label>
+                        <input type="number" name="ilosc" required><br>
+                        <input type="submit" value="Sprzedaż">
+                    </form>
+                    <h2>Magazyn</h2>
+                            {% if stan_magazynu %}
+                                <ul>
+                                    {% for product in stan_magazynu %}
+                                        <li>{{ product.name }}: {{ product.quantity }} szt.</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>Magazyn jest pusty.</p>
+                            {% endif %}
+                    <h2>Zmiana Salda</h2>
+                    <form method="post" action="{{ url_for('index') }}">
+                        <label for="zmiana_saldo">Wartość zmiany salda: <br>(wartość dodatnia lub ujemna)</label>
+                        <input type="text" id="zmiana_saldo" name="zmiana_saldo" required>
+                        <button type="submit">Zmień Saldo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        &copy; Kielce <span id="currentDate"></span> | Designed by Marcin Molenda
+    </div>
+    <script>
+        var currentDateElement = document.getElementById('currentDate');
+        var currentDate = new Date();
+        currentDateElement.innerHTML = currentDate.toLocaleDateString();
+    </script>
+</body>
+</html>

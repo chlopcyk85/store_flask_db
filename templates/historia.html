@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Historia</title>
+    <meta name="author" content="Marcin Molenda" />
+    <meta name="description" content="Historia magazynu" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        ody {
+        background-image: url('/static/img/background.jpg');
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+        .container {
+            flex: 1;
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+        }
+
+        h2 {
+            font-size: 18px;
+            position: relative;
+        }
+
+        .home {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            background-color: #494770;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .history-content {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: rgba(73, 71, 112, 0.8);
+        color: #fff;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Przegląd historii:
+            <a href="/" class="home history-button">Powrót do Strony Głównej</a>
+        </h2>
+        <ul>
+            {% for entry in history %}
+                <li>{{ entry.text }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="footer">
+        &copy; Kielce <span id="currentDate"></span> | Designed by Marcin Molenda
+    </div>
+    <script>
+        var currentDateElement = document.getElementById('currentDate');
+        var currentDate = new Date();
+        currentDateElement.innerHTML = currentDate.toLocaleDateString();
+    </script>
+</body>
+</html>
